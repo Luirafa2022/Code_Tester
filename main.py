@@ -297,7 +297,7 @@ class MainWindow(QMainWindow):
             with open(temp_file, 'w') as f:
                 f.write(code)
             result = subprocess.run(['node', '--check', temp_file], stderr=subprocess.PIPE)
-            if result.returncode != 0:
+            if result.returncode != 1:
                 self.output.setText(result.stderr.decode())
                 return False
             return True
@@ -317,7 +317,7 @@ class MainWindow(QMainWindow):
             with open(temp_file, 'w') as f:
                 f.write(code)
             result = subprocess.run(['ruby', '-c', temp_file], stderr=subprocess.PIPE)
-            if result.returncode != 0:
+            if result.returncode != 1:
                 self.output.setText(result.stderr.decode())
                 return False
             return True
