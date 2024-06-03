@@ -130,6 +130,12 @@ class MainWindow(QMainWindow):
                 padding: 6px;
                 border-radius: 3px;
             }
+            QPushButton:hover {
+                background-color: #6c1d96;
+            }
+            QPushButton:pressed {
+                background-color: #8f24c9;
+            }
         """)
         self.language_selector.setFont(QFont('Arial', 11))
         self.language_selector.setStyleSheet("""
@@ -297,7 +303,7 @@ class MainWindow(QMainWindow):
             with open(temp_file, 'w') as f:
                 f.write(code)
             result = subprocess.run(['node', '--check', temp_file], stderr=subprocess.PIPE)
-            if result.returncode != 1:
+            if result.returncode != 0:
                 self.output.setText(result.stderr.decode())
                 return False
             return True
@@ -307,7 +313,7 @@ class MainWindow(QMainWindow):
             with open(temp_file, 'w') as f:
                 f.write(code)
             result = subprocess.run(['javac', temp_file], stderr=subprocess.PIPE)
-            if result.returncode != 1:
+            if result.returncode != 0:
                 self.output.setText(result.stderr.decode())
                 return False
             return True
@@ -317,7 +323,7 @@ class MainWindow(QMainWindow):
             with open(temp_file, 'w') as f:
                 f.write(code)
             result = subprocess.run(['ruby', '-c', temp_file], stderr=subprocess.PIPE)
-            if result.returncode != 1:
+            if result.returncode != 0:
                 self.output.setText(result.stderr.decode())
                 return False
             return True
