@@ -276,18 +276,7 @@ class MainWindow(QMainWindow):
             if key in error_message:
                 suggestion = suggestions[key]
                 self.output.append(f"\nSugestão: {suggestion}")
-                self.askForCorrection(suggestion)
                 return
-
-    def askForCorrection(self, suggestion):
-        reply = QMessageBox.question(self, 'Sugestão de Correção',
-                                     "Deseja aplicar a seguinte correção?\n" + suggestion,
-                                     QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-
-        if reply == QMessageBox.Yes:
-            self.output.append("Correção aceita pelo usuário. Por favor, ajuste seu código conforme a sugestão.")
-        else:
-            self.output.append("Correção rejeitada pelo usuário.")
 
     def checkSyntax(self, code, language):
         if language == 'Python':
@@ -307,16 +296,6 @@ class MainWindow(QMainWindow):
                 self.output.setText(result.stderr.decode())
                 return False
             return True
-        elif language == 'Java':
-            # For Java, we use javac to check for syntax errors
-            temp_file = 'Main.java'
-            with open(temp_file, 'w') as f:
-                f.write(code)
-            result = subprocess.run(['javac', temp_file], stderr=subprocess.PIPE)
-            if result.returncode != 0:
-                self.output.setText(result.stderr.decode())
-                return False
-            return True
         elif language == 'Ruby':
             # For Ruby, we use ruby -c to check for syntax errors
             temp_file = 'Main.rb'
@@ -328,12 +307,6 @@ class MainWindow(QMainWindow):
                 return False
             return True
         return True
-
-    def highlightError(self, error):
-        if isinstance(error, SyntaxError):
-            line = error.lineno
-            self.editor.markerAdd(line - 1, self.editor.SC_MARK_BACKGROUND)
-            self.editor.markerDefine(self.editor.SC_MARK_BACKGROUND, QColor("#FF0000"))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
